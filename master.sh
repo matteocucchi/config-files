@@ -58,7 +58,7 @@ sudo rm /etc/containerd/config.toml
 sudo systemctl restart containerd
 
 echo "[task 9] kubeadm init master"
-sudo kubeadm init --apiserver-advertise-address=172.16.16.100 --pod-network-cidr=192.168.0.0/16
+sudo kubeadm init --apiserver-advertise-address=172.16.16.100 --pod-network-cidr=10.244.0.0/16
 
 echo "[task 10] enable kubectl for user"
 mkdir -p $HOME/.kube
