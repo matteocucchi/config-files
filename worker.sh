@@ -3,8 +3,8 @@ echo 172.16.16.100 kmaster kmaster.example.com | sudo tee -a /etc/hosts
 echo 172.16.16.101 kworker1 kworker1.example.com | sudo tee -a /etc/hosts
 
 echo "[task 2] disabilitare selinux"
-setenforce 0
-sed -i 's/SELINUX=permissive\|SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+sudo setenforce 0
+sudo sed -i 's/SELINUX=permissive\|SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
 
 echo "[task 3] disabilitare firewalld"
 sudo systemctl disable firewalld --now
