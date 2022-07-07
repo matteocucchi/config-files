@@ -3,8 +3,8 @@ echo 172.16.16.100 kmaster kmaster.example.com | sudo tee -a /etc/hosts
 echo 172.16.16.101 kworker1 kworker1.example.com | sudo tee -a /etc/hosts
 
 echo "[task 2] disabilitare selinux"
-setenforce 0
-sed -i 's/SELINUX=permissive\|SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+sudo setenforce 0
+sudo sed -i 's/SELINUX=permissive\|SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
 
 echo "[task 3] disabilitare firewalld"
 sudo systemctl disable firewalld --now
@@ -12,7 +12,7 @@ sudo systemctl stop firewalld
 
 echo "[task 4] disabilitare swap"
 sudo swapoff -a
-sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 
 echo "[task 5] networking kubernetes"
 cat <<EOF | sudo tee /etc/sysctl.d/kubernetes.conf
@@ -23,7 +23,7 @@ sudo sysctl --system
 
 echo "[task 6] Docker installation"
 sudo yum check-update -y
-sudo yum install -y yum-utils device-mapper-persistent-data lvm2 -y
+sudo yum install -y yum-utils device-mapper-persistent-data lvm2
 sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 sudo yum install docker-ce -y
 mkdir -p /etc/docker
@@ -57,7 +57,7 @@ echo "[task 8] delete config file containerd"
 sudo rm /etc/containerd/config.toml
 sudo systemctl restart containerd
 
-echo "[task 9] kubeadm init"
+echo "[task 9] kubeadm init master"
 sudo kubeadm init --apiserver-advertise-address=172.16.16.100 --pod-network-cidr=192.168.0.0/16
 
 echo "[task 10] enable kubectl for user"
@@ -66,4 +66,6 @@ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 echo "[task 11] flannel"
-echo "da aggiungere"
+sudo yum install wget -y
+wget https://raw.githubusercontent.com/matteocucchi/config-files/main/kube-flannel.yml
+kubectl apply -f kube-flannel.yml
