@@ -64,8 +64,3 @@ echo "[task 10] enable kubectl for user"
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
-
-echo "[task 11] flannel"
-sudo yum install wget -y
-wget https://raw.githubusercontent.com/matteocucchi/config-files/main/kube-flannel.yml
-kubectl apply -f kube-flannel.yml
