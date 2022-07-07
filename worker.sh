@@ -12,7 +12,7 @@ sudo systemctl stop firewalld
 
 echo "[task 4] disabilitare swap"
 sudo swapoff -a
-sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 
 echo "[task 5] networking kubernetes"
 cat <<EOF | sudo tee /etc/sysctl.d/kubernetes.conf
