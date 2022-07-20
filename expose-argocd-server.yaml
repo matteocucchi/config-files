@@ -3,14 +3,10 @@ kind: Service
 metadata:
   name: expose-argocd-server
   namespace: argocd
-  annotations:
-      prometheus.io/scrape: 'true'
-      prometheus.io/path:   /
-      prometheus.io/port:   '8080'
 spec:
   selector: 
     app: argocd-server
-  type: NodePort  
+  type: NodePort 
   ports:
     - port: 8080
       targetPort: 8080
