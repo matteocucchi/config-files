@@ -1,6 +1,7 @@
 echo "[task 1] modifica file host"
 echo 172.16.16.100 kmaster kmaster.example.com | sudo tee -a /etc/hosts
 echo 172.16.16.101 kworker1 kworker1.example.com | sudo tee -a /etc/hosts
+echo 172.16.16.102 kworker2 kworker2.example.com | sudo tee -a /etc/hosts
 
 echo "[task 2] disabilitare selinux"
 sudo setenforce 0
@@ -39,6 +40,7 @@ cat <<EOF | sudo tee /etc/docker/daemon.json
 EOF
 sudo systemctl start docker
 sudo systemctl enable docker --now
+sudo chmod 666 /var/run/docker.sock
 
 echo "[task 7] kubernetes installation"
 cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
@@ -56,3 +58,8 @@ sudo systemctl enable --now kubelet
 echo "[task 8] delete config file containerd"
 sudo rm /etc/containerd/config.toml
 sudo systemctl restart containerd
+
+echo "[task 9] install Helm"
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+chmod 700 get_helm.sh
+./get_helm.sh
